@@ -1,60 +1,41 @@
 export let expenses = [];
+export let cap = null; 
+export let currency = 'RWF';
 
-export function addExpense(expense) {
-    expenses.push(expense);
+// adding expenses
+export function addExpense(exp){
+  expenses.push(exp);
 }
 
-export function deleteExpense(id) {
-    expenses = expenses.filter(e => e.id !== id);
+// updating expense by id
+export function updateExpense(id, newExp){
+  const i = expenses.findIndex(e=>e.id===id);
+  if(i>=0){
+    expenses[i] = {...expenses[i], ...newExp, updatedAt: new Date().toISOString()};
+  }
 }
 
-export function updateExpense(id, newData) {
-    const index = expenses.findIndex(e => e.id === id);
-    if (index !== -1) {
-        expenses[index] = newData;
-    }
+// delete
+export function deleteExpense(id){
+  expenses = expenses.filter(e=>e.id!==id);
 }
 
-export function getStats() {
+// stats
+export function getStats(){
+  const totalCount = expenses.length;
+  const totalAmount = expenses.reduce((sum,e)=>sum+parseFloat(e.amount),0);
 
-    let totalAmount = 0;
-    let categoryCount = {};
-    let today = new Date();
-    let last7 = [];
+  const cats = {};
+  expenses.forEach(e=> cats[e.category] = (cats[e.category]||0)+1 );
+  const topCategory = Object.entries(cats).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'None';
 
-    for (let i = 0; i < 7; i++) {
-        last7.push(0);
-    }
+  // last 7 days chart
+  const last7 = Array(7).fill(0);
+  const today = new Date();
+  expenses.forEach(e=>{
+    const diff = Math.floor((today-new Date(e.date))/(1000*60*60*24));
+    if(diff<7) last7[6-diff] += parseFloat(e.amount);
+  });
 
-    expenses.forEach(e => {
-
-        totalAmount += parseFloat(e.amount);
-
-        if (!categoryCount[e.category]) {
-            categoryCount[e.category] = 0;
-        }
-        categoryCount[e.category]++;
-
-        let diff = Math.floor((today - new Date(e.date)) / (1000 * 60 * 60 * 24));
-        if (diff >= 0 && diff < 7) {
-            last7[6 - diff] += parseFloat(e.amount);
-        }
-    });
-
-    let topCategory = "None";
-    let max = 0;
-
-    for (let cat in categoryCount) {
-        if (categoryCount[cat] > max) {
-            max = categoryCount[cat];
-            topCategory = cat;
-        }
-    }
-
-    return {
-        totalCount: expenses.length,
-        totalAmount,
-        topCategory,
-        last7Days: last7
-    };
+  return {totalCount, totalAmount, topCategory, last7};
 }

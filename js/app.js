@@ -1,57 +1,63 @@
-import { addExpense, updateExpense, expenses } from './state.js';
-import { saveExpenses, loadExpenses } from './storage.js';
-import { validateDescription, validateAmount, validateCategory, validateDate } from './validators.js';
-import { render } from './ui.js';
+import { expenses, addExpense, updateExpense, deleteExpense } from './state.js';
+import { saveExpenses, loadExpenses, exportJSON, importJSON } from './storage.js';
+import { validate } from './validators.js';
+import { renderRecords } from './ui.js';
 
-const form = document.getElementById("expense-form");
-const searchInput = document.getElementById("search-input");
-const caseCheckbox = document.getElementById("case-checkbox");
+// form and als search
+const form = document.getElementById('expense-form');
+const searchInput = document.getElementById('search-input');
+const caseCheck = document.getElementById('case-checkbox');
+const exportBtn = document.getElementById('export-btn');
+const importInput = document.getElementById('import-file');
 
-// load saved data
-expenses.push(...loadExpenses());
-render();
+// loading the old
+loadExpenses().forEach(e=>expenses.push(e));
+renderRecords();
 
-// form submit
-form.addEventListener("submit", function(e) {
+// submitt
+form.addEventListener('submit', e=>{
+  e.preventDefault();
+  const id = form.dataset.editId || `rec_${Date.now()}`;
+  const desc = form.description.value.trim();
+  const amt = form.amount.value.trim();
+  const cat = form.category.value.trim();
+  const date = form.date.value;
 
-    e.preventDefault();
+  if(!validate('description',desc) || !validate('amount',amt) || !validate('category',cat) || !validate('date',date)){
+    alert('check your inputs');
+    return;
+  }
 
-    const description = form.description.value;
-    const amount = form.amount.value;
-    const category = form.category.value;
-    const date = form.date.value;
+  const exp = {id, description:desc, amount:parseFloat(amt), category:cat, date, createdAt:new Date().toISOString(), updatedAt:new Date().toISOString()};
 
-    if (!validateDescription(description) ||
-        !validateAmount(amount) ||
-        !validateCategory(category) ||
-        !validateDate(date)) {
+  if(form.dataset.editId){
+    updateExpense(id,exp);
+    delete form.dataset.editId;
+  } else addExpense(exp);
 
-        alert("Invalid input");
-        return;
-    }
-
-    const expense = {
-        id: Date.now().toString(),
-        description,
-        amount,
-        category,
-        date
-    };
-
-    if (form.dataset.editId) {
-        updateExpense(form.dataset.editId, expense);
-        delete form.dataset.editId;
-    } else {
-        addExpense(expense);
-    }
-
-    saveExpenses();
-    render();
-
-    form.reset();
+  saveExpenses(expenses);
+  form.reset();
+  renderRecords();
 });
 
-// search
-searchInput.addEventListener("input", function() {
-    render(searchInput.value, caseCheckbox.checked);
+// to search
+searchInput.addEventListener('input', ()=>{
+  renderRecords(searchInput.value, caseCheck.checked);
+});
+
+// exporting
+exportBtn.addEventListener('click', exportJSON);
+
+// importig
+importInput.addEventListener('change', async e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  try{
+    const data = await importJSON(file);
+    data.forEach(d=>expenses.push(d));
+    saveExpenses(expenses);
+    renderRecords();
+  }catch(err){
+    alert('Import failed '+err);
+  }
 });

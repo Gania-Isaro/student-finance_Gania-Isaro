@@ -1,13 +1,14 @@
-export function highlight(text, searchText, ignoreCase) {
+// compile regex safely
+export function compileRegex(input, flags='i'){
+  try{
+    return input ? new RegExp(input, flags) : null;
+  }catch{
+    return null;
+  }
+}
 
-    if (!searchText) return text;
-
-    let flags = "g";
-    if (ignoreCase) flags = "gi";
-
-    const pattern = new RegExp(searchText, flags);
-
-    return text.replace(pattern, function(match) {
-        return "<mark>" + match + "</mark>";
-    });
+// highlight matches for accessibility
+export function highlight(text, re){
+  if(!re) return text;
+  return text.replace(re, m=> `<mark>${m}</mark>`);
 }
