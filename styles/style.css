@@ -164,7 +164,7 @@ table button:hover, table button:focus {
 
 #last-7-days div {
   flex: 1;
-  background: #cc000e;
+  background: #0077cc;
   border-radius: 4px;
   transition: height 0.3s;
 }
