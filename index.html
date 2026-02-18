@@ -127,8 +127,10 @@
                             <select id="sort">
                                 <option value="date-desc">Date (Newest)</option>
                                 <option value="date-asc">Date (Oldest)</option>
-                                <option value="amount-desc">Amount (High-Low)</option>
+                                <option value="category-asc">Category (A-Z)</option>
+                                <option value="category-desc">Category (Z-A)</option>
                                 <option value="amount-asc">Amount (Low-High)</option>
+                                <option value="amount-desc">Amount (High-Low)</option>
                             </select>
                         </div>
                     </div>
@@ -294,7 +296,14 @@
     </div>
 
     <!-- Main Logic (Pending Implementation) -->
-    <script type="module" src="scripts/app.js"></script>
+    <!-- Main Logic: Loading scripts sequentially for file:// support (no ES Modules) -->
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/validators.js"></script>
+    <script src="scripts/state.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/search.js"></script>
+    <script src="scripts/app.js"></script>
 </body>
 
 </html>
