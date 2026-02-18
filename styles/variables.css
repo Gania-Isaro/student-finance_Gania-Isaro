@@ -1,0 +1,82 @@
+:root {
+    /* "Vibrant Glass" Theme */
+
+    /* Primary: Electric Indigo */
+    --primary-color: #6366f1;
+    --primary-dark: #4338ca;
+    --primary-light: #e0e7ff;
+
+    /* Secondary: Teal/Cyan */
+    --secondary-color: #06b6d4;
+
+    /* Accent: Hot Pink/Rose */
+    --accent-color: #f43f5e;
+
+    /* Gradients */
+    --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+    --card-gradient: linear-gradient(145deg, #ffffff, #f8fafc);
+    --sidebar-gradient: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%);
+
+    /* Backgrounds */
+    --background-body: #f1f5f9;
+    /* Light Grey */
+    --background-card: rgba(255, 255, 255, 0.9);
+    /* Slight transparency */
+
+    /* Text */
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --text-on-dark: #f8fafc;
+
+    /* Status Colors */
+    --danger-color: #ef4444;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+
+    /* Typography */
+    --font-main: 'Outfit', 'Inter', system-ui, sans-serif;
+    /* Outfit is trendy */
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 2rem;
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1.25rem;
+    /* More generous spacing */
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+
+    /* Borders */
+    --radius-sm: 0.5rem;
+    --radius-md: 1rem;
+    --radius-lg: 1.5rem;
+    /* Very rounded 'modern' feel */
+    --border-color: #e2e8f0;
+
+    /* Shadows (Neumorphic/Glassy) */
+    --shadow-sm: 0 2px 4px rgba(148, 163, 184, 0.1);
+    --shadow-md: 0 8px 16px rgba(148, 163, 184, 0.1);
+    --shadow-lg: 0 12px 24px rgba(148, 163, 184, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    --shadow-colored: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+}
+
+/* Dark Mode Overrides - "Cyber Dark" */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-body: #0f172a;
+        /* Deep Navy */
+        --background-card: rgba(30, 41, 59, 0.7);
+        /* Deep Slate Glass */
+        --text-main: #f1f5f9;
+        --text-muted: #94a3b8;
+        --border-color: rgba(148, 163, 184, 0.1);
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+        --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        --card-gradient: linear-gradient(145deg, #1e293b, #0f172a);
+    }
+}

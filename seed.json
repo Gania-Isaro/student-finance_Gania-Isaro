@@ -1,0 +1,102 @@
+[
+    {
+        "id": "txn_001",
+        "description": "Textbooks for Semester 1",
+        "amount": 160500.00,
+        "category": "Books",
+        "date": "2025-09-01",
+        "type": "expense",
+        "createdAt": "2025-09-01T10:00:00Z",
+        "updatedAt": "2025-09-01T10:00:00Z"
+    },
+    {
+        "id": "txn_002",
+        "description": "Part-time Job Salary",
+        "amount": 250000.00,
+        "category": "Income",
+        "date": "2025-09-05",
+        "type": "income",
+        "createdAt": "2025-09-05T09:00:00Z",
+        "updatedAt": "2025-09-05T09:00:00Z"
+    },
+    {
+        "id": "txn_003",
+        "description": "Bus Pass (Monthly)",
+        "amount": 15000.00,
+        "category": "Transport",
+        "date": "2025-09-06",
+        "type": "expense",
+        "createdAt": "2025-09-06T08:30:00Z",
+        "updatedAt": "2025-09-06T08:30:00Z"
+    },
+    {
+        "id": "txn_004",
+        "description": "Coffee with friends at Brioche",
+        "amount": 8500.00,
+        "category": "Entertainment",
+        "date": "2025-09-10",
+        "type": "expense",
+        "createdAt": "2025-09-10T14:15:00Z",
+        "updatedAt": "2025-09-10T14:15:00Z"
+    },
+    {
+        "id": "txn_005",
+        "description": "Tuition Installment",
+        "amount": 500000.00,
+        "category": "Fees",
+        "date": "2025-09-15",
+        "type": "expense",
+        "createdAt": "2025-09-15T11:00:00Z",
+        "updatedAt": "2025-09-15T11:00:00Z"
+    },
+    {
+        "id": "txn_006",
+        "description": "Groceries - Simba Supermarket",
+        "amount": 42300.50,
+        "category": "Food",
+        "date": "2025-09-18",
+        "type": "expense",
+        "createdAt": "2025-09-18T16:45:00Z",
+        "updatedAt": "2025-09-18T16:45:00Z"
+    },
+    {
+        "id": "txn_007",
+        "description": "Freelance Web Design Project",
+        "amount": 120000.00,
+        "category": "Income",
+        "date": "2025-09-22",
+        "type": "income",
+        "createdAt": "2025-09-22T09:00:00Z",
+        "updatedAt": "2025-09-22T09:00:00Z"
+    },
+    {
+        "id": "txn_008",
+        "description": "Netflix Subscription",
+        "amount": 12500.00,
+        "category": "Entertainment",
+        "date": "2025-09-25",
+        "type": "expense",
+        "createdAt": "2025-09-25T10:00:00Z",
+        "updatedAt": "2025-09-25T10:00:00Z"
+    },
+    {
+        "id": "txn_009",
+        "description": "Emergency - Laptop Charger",
+        "amount": 35000.00,
+        "category": "Other",
+        "date": "2025-09-28",
+        "type": "expense",
+        "createdAt": "2025-09-28T13:20:00Z",
+        "updatedAt": "2025-09-28T13:20:00Z"
+    },
+    {
+        "id": "txn_010",
+        "description": "Late Night Pizza",
+        "amount": 12000.00,
+        "category": "Food",
+        "date": "2025-09-29",
+        "type": "expense",
+        "createdAt": "2025-09-29T23:00:00Z",
+        "updatedAt": "2025-09-29T23:00:00Z"
+    }
+]

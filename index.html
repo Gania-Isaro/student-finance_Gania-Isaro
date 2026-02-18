@@ -1,116 +1,300 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Student Finance Tracker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/style.css">
+    <meta name="description" content="A simple, responsive student finance tracker to manage budgets and transactions.">
+    <title>Student Finance Tracker</title>
+
+    <!-- Google Fonts for better typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom styles for a premium look -->
+    <link rel="stylesheet" href="styles/variables.css">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/layout.css">
+    <link rel="stylesheet" href="styles/components.css">
 </head>
+
 <body>
+    <input type="checkbox" id="sidebar-toggle" class="visually-hidden">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-<a href="#main" class="skip-link">Skip to content</a>
+    <!-- ARIA Live Region for Status Updates -->
+    <div id="status-message" role="status" aria-live="polite" class="visually-hidden"></div>
 
-<header>
-    <h1>Student Finance Tracker</h1>
-</header>
+    <div class="app-container">
+        <!-- Sidebar Navigation - Access all key areas -->
+        <nav class="sidebar" aria-label="Main Navigation">
+            <div class="sidebar-header">
+                <span class="logo-icon">💰</span>
+                <h1 class="logo-text">FinanceTracker</h1>
+                <label for="sidebar-toggle" class="menu-toggle" aria-label="Toggle menu" role="button">
+                    <span class="hamburger">☰</span>
+                </label>
+            </div>
 
-<nav>
-    <button id="about-btn">About</button>
-</nav>
+            <ul class="nav-links">
+                <li><a href="#dashboard" class="nav-link">
+                        <span class="icon">📊</span> Dashboard
+                    </a></li>
+                <li><a href="#records" class="nav-link">
+                        <span class="icon">📝</span> Records
+                    </a></li>
+                <li><a href="#add-transaction" class="nav-link">
+                        <span class="icon">➕</span> Add New
+                    </a></li>
+                <li><a href="#settings" class="nav-link">
+                        <span class="icon">⚙️</span> Settings
+                    </a></li>
+                <li><a href="#about" class="nav-link">
+                        <span class="icon">ℹ️</span> About
+                    </a></li>
+            </ul>
 
-<main id="main">
 
-<section id="dashboard">
-    <h2>Dashboard</h2>
-    <p>Total Records: <span id="total-count">0</span></p>
-    <p>Total Amount: <span id="total-amount">0</span></p>
-    <p>Top Category: <span id="top-category">None</span></p>
-    <div id="last-7-days"></div>
+        </nav>
 
-    <p id="cap-message" role="status" aria-live="polite"></p>
-</section>
+        <!-- Main Content Area - Where the data lives -->
+        <main id="main-content" class="main-content">
 
-<section id="form-section">
-    <h2>Add / Edit Expense</h2>
+            <!-- Dashboard Section - Overview of financial health -->
+            <section id="dashboard" class="view-section">
+                <header class="section-header">
+                    <h2>Dashboard</h2>
+                    <div class="date-display">September 29, 2025</div>
+                </header>
 
-    <form id="expense-form">
+                <div class="stats-grid">
+                    <div class="stat-card balance" style="border-left: 4px solid var(--primary-color);">
+                        <h3>Current Balance</h3>
+                        <p class="amount">$1,250.00</p>
+                        <span class="trend positive">↑ 12% vs last month</span>
+                    </div>
+                    <div class="stat-card income">
+                        <h3>Total Income</h3>
+                        <p class="amount">$2,000.00</p>
+                    </div>
+                    <div class="stat-card expense">
+                        <h3>Total Expenses</h3>
+                        <p class="amount">$750.00</p>
+                    </div>
+                    <div class="stat-card budget">
+                        <h3>Budget Cap</h3>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: 60%"></div>
+                        </div>
+                        <p class="meta">60% used ($750 / $1250)</p>
+                    </div>
+                </div>
 
-        <label>Description
-            <input type="text" id="description" required>
-            <small class="error" id="desc-error"></small>
-        </label>
+                <!-- Chart Placeholder - Visualizing spending trends -->
+                <div class="chart-container">
+                    <h3>Spending Trends (Last 7 Days)</h3>
+                    <div class="chart-placeholder">
+                        <div class="bar" style="height: 40%; background: var(--accent-gradient);" title="Mon: $40">
+                        </div>
+                        <div class="bar" style="height: 70%; background: var(--accent-gradient);" title="Tue: $70">
+                        </div>
+                        <div class="bar" style="height: 30%; background: var(--accent-gradient);" title="Wed: $30">
+                        </div>
+                        <div class="bar" style="height: 90%; background: var(--accent-gradient);" title="Thu: $90">
+                        </div>
+                        <div class="bar" style="height: 50%; background: var(--accent-gradient);" title="Fri: $50">
+                        </div>
+                        <div class="bar" style="height: 60%; background: var(--accent-gradient);" title="Sat: $60">
+                        </div>
+                        <div class="bar" style="height: 20%; background: var(--accent-gradient);" title="Sun: $20">
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-        <label>Amount
-            <input type="text" id="amount" required>
-            <small class="error" id="amount-error"></small>
-        </label>
+            <!-- Records Section - Detailed list of all transactions -->
+            <section id="records" class="view-section">
+                <header class="section-header">
+                    <h2>Transaction Records</h2>
+                    <div class="actions">
+                        <div class="search-box">
+                            <label for="search" class="visually-hidden">Search transactions</label>
+                            <input type="text" id="search" placeholder="Search (e.g. 'Coffee' or >50)">
+                        </div>
+                        <div class="sort-controls">
+                            <label for="sort">Sort by:</label>
+                            <select id="sort">
+                                <option value="date-desc">Date (Newest)</option>
+                                <option value="date-asc">Date (Oldest)</option>
+                                <option value="amount-desc">Amount (High-Low)</option>
+                                <option value="amount-asc">Amount (Low-High)</option>
+                            </select>
+                        </div>
+                    </div>
+                </header>
 
-        <label>Category
-            <input type="text" id="category" required>
-            <small class="error" id="category-error"></small>
-        </label>
+                <!-- Responsive Table - Adapts to mobile screens -->
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th class="text-right">Amount</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Example Data Rows -->
+                            <tr>
+                                <td data-label="Date">2025-09-25</td>
+                                <td data-label="Description">Lunch at cafeteria</td>
+                                <td data-label="Category"><span class="badge category-food">Food</span></td>
+                                <td data-label="Amount" class="text-right amount-negative">-$12.50</td>
+                                <td data-label="Actions" class="text-center">
+                                    <button class="btn-icon edit" aria-label="Edit">✏️</button>
+                                    <button class="btn-icon delete" aria-label="Delete">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Date">2025-09-23</td>
+                                <td data-label="Description">Chemistry Textbook</td>
+                                <td data-label="Category"><span class="badge category-books">Books</span></td>
+                                <td data-label="Amount" class="text-right amount-negative">-$89.99</td>
+                                <td data-label="Actions" class="text-center">
+                                    <button class="btn-icon edit" aria-label="Edit">✏️</button>
+                                    <button class="btn-icon delete" aria-label="Delete">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td data-label="Date">2025-09-20</td>
+                                <td data-label="Description">Tutoring Income</td>
+                                <td data-label="Category"><span class="badge category-income">Income</span></td>
+                                <td data-label="Amount" class="text-right amount-positive">+$150.00</td>
+                                <td data-label="Actions" class="text-center">
+                                    <button class="btn-icon edit" aria-label="Edit">✏️</button>
+                                    <button class="btn-icon delete" aria-label="Delete">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
 
-        <label>Date
-            <input type="date" id="date" required>
-            <small class="error" id="date-error"></small>
-        </label>
+            <!-- Add Transaction Section - Form to input new expenses/income -->
+            <section id="add-transaction" class="view-section">
+                <header class="section-header">
+                    <h2>Add Transaction</h2>
+                </header>
+                <form class="entry-form">
+                    <div class="form-group">
+                        <label for="desc">Description</label>
+                        <input type="text" id="desc" required placeholder="e.g. Lunch">
+                        <small class="hint">No leading/trailing spaces.</small>
+                    </div>
 
-        <button type="submit">Save</button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="amount">Amount</label>
+                            <input type="number" id="amount" step="0.01" required placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Type</label>
+                            <select id="type">
+                                <option value="expense">Expense</option>
+                                <option value="income">Income</option>
+                            </select>
+                        </div>
+                    </div>
 
-    </form>
-</section>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category">
+                                <option value="Food">Food</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Books">Books</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Fees">Fees</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" id="date" required>
+                        </div>
+                    </div>
 
-<section>
-    <h2>Search</h2>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Transaction</button>
+                    </div>
+                </form>
+            </section>
 
-    <input type="text" id="search-input" placeholder="Regex search">
-    <label>
-        <input type="checkbox" id="case-checkbox">
-        Case Insensitive
-    </label>
-</section>
+            <!-- Settings Section - Configure currency and budget limits -->
+            <section id="settings" class="view-section">
+                <header class="section-header">
+                    <h2>Settings</h2>
+                </header>
+                <div class="settings-card">
+                    <h3>Currency</h3>
+                    <div class="form-group">
+                        <label for="currency-select">Base Currency</label>
+                        <select id="currency-select">
+                            <option value="RWF">RWF (Frw)</option>
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                        </select>
+                    </div>
+                    <h3>Budget Limits</h3>
+                    <div class="form-group">
+                        <label for="budget-cap">Monthly Spending Cap</label>
+                        <input type="number" id="budget-cap" value="1000">
+                    </div>
 
-<section>
-    <h2>Records</h2>
+                    <h3>Data Management</h3>
+                    <div class="data-actions">
+                        <button class="btn btn-outline">Export JSON</button>
+                        <label class="btn btn-outline">
+                            Import JSON <input type="file" hidden>
+                        </label>
+                        <button class="btn btn-danger">Clear All Data</button>
+                    </div>
+                </div>
+            </section>
 
-    <div class="sort-buttons">
-        <button id="sort-date">Sort by Date</button>
-        <button id="sort-desc">Sort A-Z</button>
-        <button id="sort-amount">Sort by Amount</button>
+            <!-- About Section - Project info and contact details -->
+            <section id="about" class="view-section">
+                <header class="section-header">
+                    <h2>About</h2>
+                </header>
+                <div class="about-content">
+                    <p>Student Finance Tracker helps you manage your budget efficiently during your studies.</p>
+                    <h3>Features</h3>
+                    <ul>
+                        <li>Track Income & Expenses</li>
+                        <li>Visualize Spending Habits</li>
+                        <li>Set Monthly Budgets</li>
+                        <li>Secure Local Storage (No data leaves your device)</li>
+                    </ul>
+                    <h3>Contact</h3>
+                    <p>Created by <strong>Gania Isaro</strong></p>
+                    <p>
+                        <a href="https://github.com/Gania-Isaro" target="_blank">GitHub: Gania-Isaro</a> |
+                        <a href="mailto:g.kayumba@alustudent.com">g.kayumba@alustudent.com</a>
+                    </p>
+                </div>
+            </section>
+
+        </main>
     </div>
 
-    <table id="records-table">
-        <thead>
-            <tr>
-                <th>Description</th>
-                <th>Amount</th>
-                <th>Category</th>
-                <th>Date</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</section>
-
-<section id="settings">
-    <h2>Settings</h2>
-
-    <label>Spending Cap
-        <input type="number" id="cap-input">
-    </label>
-
-    <button id="export-btn">Export JSON</button>
-    <input type="file" id="import-file">
-</section>
-
-</main>
-
-<footer>
-    <p>Created by Gania | GitHub: https://github.com/Gania-Isaro/student-finance_Gania-Isaro | Email: g.kayumba@austudent.com</p>
-</footer>
-
-<script src="scripts/app.js"></script>
-
+    <!-- Main Logic (Pending Implementation) -->
+    <script type="module" src="scripts/app.js"></script>
 </body>
+
 </html>

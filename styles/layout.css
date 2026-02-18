@@ -1,0 +1,156 @@
+/* Layout Grid: Sidebar + Content */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* Sidebar Navigation (Updated Design) */
+.sidebar {
+    background: var(--sidebar-gradient);
+    border-right: none;
+    width: 100%;
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    /* Changed from sticky for better mobile flow */
+    z-index: 100;
+    color: var(--text-on-dark);
+    box-shadow: var(--shadow-md);
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-text {
+    font-size: var(--font-size-xl);
+    background: linear-gradient(to right, #ffffff, #a5b4fc);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    margin: 0;
+}
+
+.menu-toggle {
+    display: block;
+    /* Show on mobile */
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+}
+
+.nav-links {
+    list-style: none;
+    margin-bottom: auto;
+    display: none;
+    /* Hidden on mobile by default */
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transform: translateX(4px);
+}
+
+.nav-link .icon {
+    margin-right: var(--spacing-sm);
+}
+
+/* Mobile Menu Toggle (Checkbox Hack) */
+#sidebar-toggle:checked~.app-container .sidebar .nav-links {
+    display: flex;
+}
+
+#sidebar-toggle:checked~.app-container .sidebar {
+    height: auto;
+}
+
+
+
+/* Main Content Area */
+.main-content {
+    flex: 1;
+    padding: var(--spacing-lg);
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    /* Removed display:none logic to fix "Empty Page" */
+}
+
+/* View Sections - Stacked with spacing */
+.view-section {
+    display: block;
+    /* Always visible */
+    margin-bottom: var(--spacing-xl);
+    scroll-margin-top: 100px;
+    /* For sticky header */
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Layout Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tablet & Desktop Layout */
+@media (min-width: 768px) {
+    .app-container {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 280px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        padding: var(--spacing-lg);
+        border-radius: 0 20px 20px 0;
+        /* Unique styling */
+    }
+
+    .menu-toggle {
+        display: none;
+    }
+
+    .nav-links {
+        display: flex;
+    }
+
+
+
+    .main-content {
+        padding: var(--spacing-xl);
+    }
+
+    #sidebar-toggle:checked~.app-container .sidebar {
+        height: 100vh;
+    }
+}
