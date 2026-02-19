@@ -28,11 +28,13 @@ window.App.Storage = (function () {
     const loadSettings = () => {
         try {
             const data = localStorage.getItem(SETTINGS_KEY);
-            if (!data) return { theme: 'light', currency: 'RWF', budgetCap: 1000 };
-            return JSON.parse(data);
+            if (!data) return { theme: 'light', currency: 'RWF', budgetCap: 1000, savingsTarget: 0 };
+            const settings = JSON.parse(data);
+            if (settings.savingsTarget === undefined) settings.savingsTarget = 0;
+            return settings;
         } catch (error) {
             console.error('Error loading settings:', error);
-            return { theme: 'light', currency: 'RWF', budgetCap: 1000 };
+            return { theme: 'light', currency: 'RWF', budgetCap: 1000, savingsTarget: 0 };
         }
     };
 

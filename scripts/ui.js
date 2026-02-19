@@ -63,6 +63,8 @@ window.App.UI = (function () {
             .filter(r => r.type === 'expense')
             .reduce((sum, r) => sum + r.amount, 0);
 
+        const totalBalance = totalIncome - totalExpense;
+
         const incomeEl = document.querySelector('.stat-card.total-income .amount');
         if (incomeEl) {
             const converted = Utils.convertFromBase(totalIncome, settings.currency);
@@ -73,6 +75,13 @@ window.App.UI = (function () {
         if (expenseEl) {
             const converted = Utils.convertFromBase(totalExpense, settings.currency);
             expenseEl.textContent = Utils.formatCurrency(converted, settings.currency);
+        }
+
+        const balanceEl = document.querySelector('.stat-card.total-balance .amount');
+        if (balanceEl) {
+            const converted = Utils.convertFromBase(totalBalance, settings.currency);
+            balanceEl.textContent = Utils.formatCurrency(converted, settings.currency);
+            balanceEl.style.color = totalBalance >= 0 ? 'var(--success-color)' : 'var(--danger-color)';
         }
 
         // 3. Top Category
@@ -110,6 +119,28 @@ window.App.UI = (function () {
             const convertedExpense = Utils.convertFromBase(totalExpense, settings.currency);
             const convertedCap = Utils.convertFromBase(budgetCap, settings.currency);
             metaEl.textContent = `${Math.round(percentage)}% used (${Utils.formatCurrency(convertedExpense, settings.currency)} / ${Utils.formatCurrency(convertedCap, settings.currency)})`;
+        }
+
+        // 4.1 Savings Goal Status
+        const savingsTarget = (settings.savingsTarget !== undefined && settings.savingsTarget !== null) ? settings.savingsTarget : 0;
+        const savingsEl = document.querySelector('.stat-card.savings-goal .amount');
+        const savingsMetaEl = document.querySelector('.stat-card.savings-goal .meta');
+
+        if (savingsEl && savingsMetaEl) {
+            const convertedBalance = Utils.convertFromBase(totalBalance, settings.currency);
+            const convertedTarget = Utils.convertFromBase(savingsTarget, settings.currency);
+            const diff = totalBalance - savingsTarget;
+            const convertedDiff = Utils.convertFromBase(Math.abs(diff), settings.currency);
+
+            savingsEl.textContent = Utils.formatCurrency(convertedTarget, settings.currency);
+
+            if (diff >= 0) {
+                savingsMetaEl.textContent = `Reached! Over by ${Utils.formatCurrency(convertedDiff, settings.currency)}`;
+                savingsMetaEl.style.color = 'var(--success-color)';
+            } else {
+                savingsMetaEl.textContent = `Remaining: ${Utils.formatCurrency(convertedDiff, settings.currency)}`;
+                savingsMetaEl.style.color = 'var(--danger-color)';
+            }
         }
 
         // 5. Last 7-Days Trend (Chart)

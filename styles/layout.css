@@ -93,8 +93,10 @@
     padding: var(--spacing-lg);
     max-width: 1400px;
     width: 100%;
+    /* Mobile default */
+    min-width: 0;
+    /* Prevent flex blowout */
     margin: 0 auto;
-    /* Removed display:none logic to fix "Empty Page" */
 }
 
 /* View Sections - Stacked with spacing */
@@ -148,6 +150,8 @@
 
     .main-content {
         padding: var(--spacing-xl);
+        width: auto;
+        /* Let flex handle it */
     }
 
     #sidebar-toggle:checked~.app-container .sidebar {

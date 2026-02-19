@@ -98,5 +98,75 @@
         "type": "expense",
         "createdAt": "2025-09-29T23:00:00Z",
         "updatedAt": "2025-09-29T23:00:00Z"
+    },
+    {
+        "id": "txn_011",
+        "description": "Lunch at campus",
+        "amount": 15000.00,
+        "category": "Food",
+        "date": "2026-02-13",
+        "type": "expense",
+        "createdAt": "2026-02-13T12:00:00Z",
+        "updatedAt": "2026-02-13T12:00:00Z"
+    },
+    {
+        "id": "txn_012",
+        "description": "Valentine's Dinner",
+        "amount": 45000.00,
+        "category": "Entertainment",
+        "date": "2026-02-14",
+        "type": "expense",
+        "createdAt": "2026-02-14T19:30:00Z",
+        "updatedAt": "2026-02-14T19:30:00Z"
+    },
+    {
+        "id": "txn_013",
+        "description": "Weekly Groceries",
+        "amount": 32000.00,
+        "category": "Food",
+        "date": "2026-02-15",
+        "type": "expense",
+        "createdAt": "2026-02-15T11:00:00Z",
+        "updatedAt": "2026-02-15T11:00:00Z"
+    },
+    {
+        "id": "txn_014",
+        "description": "Bus Fare to Internship",
+        "amount": 5000.00,
+        "category": "Transport",
+        "date": "2026-02-16",
+        "type": "expense",
+        "createdAt": "2026-02-16T08:00:00Z",
+        "updatedAt": "2026-02-16T08:00:00Z"
+    },
+    {
+        "id": "txn_015",
+        "description": "Freelance Web Design Payment",
+        "amount": 150000.00,
+        "category": "Income",
+        "date": "2026-02-17",
+        "type": "income",
+        "createdAt": "2026-02-17T10:30:00Z",
+        "updatedAt": "2026-02-17T10:30:00Z"
+    },
+    {
+        "id": "txn_016",
+        "description": "JavaScript Mastery Book",
+        "amount": 12000.00,
+        "category": "Books",
+        "date": "2026-02-18",
+        "type": "expense",
+        "createdAt": "2026-02-18T14:00:00Z",
+        "updatedAt": "2026-02-18T14:00:00Z"
+    },
+    {
+        "id": "txn_017",
+        "description": "Mobile Internet Data",
+        "amount": 10000.00,
+        "category": "Other",
+        "date": "2026-02-19",
+        "type": "expense",
+        "createdAt": "2026-02-19T09:00:00Z",
+        "updatedAt": "2026-02-19T09:00:00Z"
     }
 ]

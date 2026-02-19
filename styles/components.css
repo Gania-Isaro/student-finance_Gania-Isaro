@@ -37,7 +37,8 @@
 .stats-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
+    /* Tighter gap on small mobile */
     margin-bottom: var(--spacing-xl);
 }
 
@@ -74,8 +75,8 @@
 }
 
 .stat-card .amount {
-    font-size: 2.5rem;
-    /* Bigger impact */
+    font-size: 1.8rem;
+    /* Reduced further to prevent clipping on small desktops */
     font-weight: 800;
     color: var(--text-main);
     margin: 0;
@@ -83,6 +84,9 @@
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    padding-right: 4px;
+    /* Prevents right-edge clipping */
+    display: inline-block;
 }
 
 .stat-card .trend.positive {
@@ -122,6 +126,7 @@
     border: 1px solid var(--border-color);
     max-width: 100%;
     /* Ensure it doesn't break layout */
+    margin-top: var(--spacing-md);
 }
 
 .data-table {
@@ -180,14 +185,29 @@
     color: #166534;
 }
 
+.category-entertainment {
+    background: #f3e8ff;
+    color: #6b21a8;
+}
+
+.category-fees {
+    background: #ffedd5;
+    color: #9a3412;
+}
+
+.category-other {
+    background: #f1f5f9;
+    color: #475569;
+}
+
 .amount-positive {
     color: var(--success-color);
     font-weight: 700;
 }
 
 .amount-negative {
-    color: var(--text-main);
-    font-weight: 600;
+    color: var(--danger-color);
+    font-weight: 700;
 }
 
 /* Inputs & Forms */
@@ -360,7 +380,8 @@ select:focus {
 
 @media (min-width: 1024px) {
     .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        /* Allow wrapping instead of forcing 4 columns */
     }
 }
 
@@ -384,12 +405,15 @@ select:focus {
 
     .data-table td {
         text-align: right;
-        padding-left: 50%;
+        padding-left: 45%;
+        /* Slightly reduced to give more room to labels */
         position: relative;
         border-bottom: 1px solid #f1f5f9;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .data-table td::before {
@@ -397,6 +421,8 @@ select:focus {
         font-weight: 700;
         color: var(--text-muted);
         text-align: left;
+        margin-right: var(--spacing-sm);
+        flex-shrink: 0;
     }
 
     .data-table td:last-child {

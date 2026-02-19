@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const budgetCapInput = document.getElementById('budget-cap');
     if (budgetCapInput) budgetCapInput.value = settings.budgetCap;
 
+    const savingsTargetInput = document.getElementById('savings-target');
+    if (savingsTargetInput) savingsTargetInput.value = settings.savingsTarget;
+
     let currentQuery = '';
     let currentSort = 'date-desc';
 
@@ -80,6 +83,15 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    // New: Savings target event listener
+    if (savingsTargetInput) {
+        savingsTargetInput.oninput = (e) => {
+            const val = parseFloat(e.target.value) || 0;
+            State.updateSettings({ savingsTarget: val });
+            render();
+        };
+    }
+
     const exportBtn = document.getElementById('export-btn');
     if (exportBtn) {
         exportBtn.onclick = () => UI.exportData();
@@ -130,8 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Invalid Amount: Must be a positive number (max 2 decimals).');
             return;
         }
-        if (!Validator.validate('category', category)) {
-            alert('Invalid Category.');
+        if (!typeInput.value) {
+            alert('Please select a Transaction Type (Income or Expense).');
+            return;
+        }
+        if (!categoryInput.value || !Validator.validate('category', category)) {
+            alert('Please select a valid Category.');
             return;
         }
         if (!Validator.validate('date', date)) {
@@ -183,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <option value="Books" ${record.category === 'Books' ? 'selected' : ''}>Books</option>
                         <option value="Entertainment" ${record.category === 'Entertainment' ? 'selected' : ''}>Entertainment</option>
                         <option value="Fees" ${record.category === 'Fees' ? 'selected' : ''}>Fees</option>
+                        <option value="Income" ${record.category === 'Income' ? 'selected' : ''}>Income</option>
                         <option value="Other" ${record.category === 'Other' ? 'selected' : ''}>Other</option>
                     </select>
                 </td>

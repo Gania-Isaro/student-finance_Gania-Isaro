@@ -3,7 +3,7 @@ window.App = window.App || {};
 window.App.State = (function () {
     const Storage = window.App.Storage;
     let records = [];
-    let settings = { theme: 'light', currency: 'RWF', budgetCap: 1000 };
+    let settings = { theme: 'light', currency: 'RWF', budgetCap: 1000, savingsTarget: 0 };
 
     const init = () => {
         records = Storage.load();
