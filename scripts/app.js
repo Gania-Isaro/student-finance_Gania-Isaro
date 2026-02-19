@@ -4,8 +4,17 @@ const Validator = window.App.Validators;
 const Search = window.App.Search;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize State and Search Params
-    const records = State.init();
+    // 1. Initialize State and UI
+    const { records, settings } = State.init();
+    UI.applyTheme(settings.theme);
+
+    // Sync settings UI
+    const currencySelect = document.getElementById('currency-select');
+    if (currencySelect) currencySelect.value = settings.currency;
+
+    const budgetCapInput = document.getElementById('budget-cap');
+    if (budgetCapInput) budgetCapInput.value = settings.budgetCap;
+
     let currentQuery = '';
     let currentSort = 'date-desc';
 
@@ -16,16 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const sorted = Search.sortRecords(filtered, currentSort);
 
         UI.renderTable(sorted);
-        // Requirement: Dashboard usually shows global stats, but if filtering, 
-        // user might want to see stats for the filter (e.g. "How much did I spend on Food?").
-        // Let's update Dashboard with FILTERED records for better utility.
         UI.updateDashboard(sorted);
     };
 
     // 2. Initial Render
     render();
 
-    // 3. Event Listeners
+    // 3. Main Event Listeners
     const form = document.querySelector('.entry-form');
     if (form) form.addEventListener('submit', handleAddRecord);
 
@@ -34,18 +40,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const searchInput = document.getElementById('search');
     if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
+        searchInput.oninput = (e) => {
             currentQuery = e.target.value;
             render();
-        });
+        };
     }
 
     const sortSelect = document.getElementById('sort');
     if (sortSelect) {
-        sortSelect.addEventListener('change', (e) => {
+        sortSelect.onchange = (e) => {
             currentSort = e.target.value;
             render();
-        });
+        };
+    }
+
+    // 4. Settings Event Listeners
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.onclick = () => {
+            const currentTheme = State.getSettings().theme;
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            State.updateSettings({ theme: newTheme });
+            UI.applyTheme(newTheme);
+        };
+    }
+
+    if (currencySelect) {
+        currencySelect.onchange = (e) => {
+            State.updateSettings({ currency: e.target.value });
+            render();
+        };
+    }
+
+    if (budgetCapInput) {
+        budgetCapInput.oninput = (e) => {
+            const val = parseFloat(e.target.value) || 0;
+            State.updateSettings({ budgetCap: val });
+            render();
+        };
+    }
+
+    const exportBtn = document.getElementById('export-btn');
+    if (exportBtn) {
+        exportBtn.onclick = () => UI.exportData();
+    }
+
+    const importInput = document.getElementById('import-input');
+    if (importInput) {
+        importInput.onchange = (e) => {
+            if (e.target.files.length > 0) {
+                UI.importData(e.target.files[0]);
+            }
+        };
+    }
+
+    const clearBtn = document.getElementById('clear-btn');
+    if (clearBtn) {
+        clearBtn.onclick = () => {
+            if (confirm('Are you sure you want to clear ALL data? This cannot be undone.')) {
+                State.clearAll();
+                render();
+                UI.showStatus('All data cleared.', 'info');
+            }
+        };
     }
 
     // --- Handlers Defined Inside Scope to Access 'render' ---
@@ -94,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         State.addRecord(newRecord);
-        render(); // Use the scoped render function
+        render();
         UI.clearForm();
         if (typeof UI.showStatus === 'function') UI.showStatus('Record added successfully!', 'success');
     }
@@ -108,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btn.classList.contains('delete')) {
             if (confirm('Are you sure you want to delete this record?')) {
                 State.deleteRecord(id);
-                render(); // Re-render
+                render();
                 if (typeof UI.showStatus === 'function') UI.showStatus('Record deleted.', 'success');
             }
         } else if (btn.classList.contains('edit')) {
@@ -116,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const record = State.getRecords().find(r => r.id === btn.dataset.id);
             if (!record) return;
 
-            // Replace row cells with input fields (Inline Edit UI)
             tr.innerHTML = `
                 <td><input type="date" value="${record.date}" class="edit-date"></td>
                 <td><input type="text" value="${record.description}" class="edit-desc"></td>
@@ -153,10 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
             updatedData.amount = parseFloat(updatedData.amount);
 
             State.updateRecord(btn.dataset.id, updatedData);
-            render(); // Re-render
+            render();
             if (typeof UI.showStatus === 'function') UI.showStatus('Record updated.', 'success');
         } else if (btn.classList.contains('cancel-edit')) {
-            render(); // Re-render to cancel
+            render();
         }
     }
 });

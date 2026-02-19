@@ -3,6 +3,8 @@ window.App = window.App || {};
 window.App.Storage = (function () {
     const KEY = 'app:data';
 
+    const SETTINGS_KEY = 'app:settings';
+
     const load = () => {
         try {
             const data = localStorage.getItem(KEY);
@@ -23,8 +25,29 @@ window.App.Storage = (function () {
         }
     };
 
+    const loadSettings = () => {
+        try {
+            const data = localStorage.getItem(SETTINGS_KEY);
+            if (!data) return { theme: 'light', currency: 'RWF', budgetCap: 1000 };
+            return JSON.parse(data);
+        } catch (error) {
+            console.error('Error loading settings:', error);
+            return { theme: 'light', currency: 'RWF', budgetCap: 1000 };
+        }
+    };
+
+    const saveSettings = (settings) => {
+        try {
+            localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+        } catch (error) {
+            console.error('Error saving settings:', error);
+        }
+    };
+
     return {
         load,
-        save
+        save,
+        loadSettings,
+        saveSettings
     };
 })();

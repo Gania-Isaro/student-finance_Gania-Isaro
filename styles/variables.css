@@ -65,18 +65,16 @@
 }
 
 /* Dark Mode Overrides - "Cyber Dark" */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background-body: #0f172a;
-        /* Deep Navy */
-        --background-card: rgba(30, 41, 59, 0.7);
-        /* Deep Slate Glass */
-        --text-main: #f1f5f9;
-        --text-muted: #94a3b8;
-        --border-color: rgba(148, 163, 184, 0.1);
-        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
-        --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.3);
-        --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-        --card-gradient: linear-gradient(145deg, #1e293b, #0f172a);
-    }
+[data-theme="dark"] {
+    --background-body: #0f172a;
+    /* Deep Navy */
+    --background-card: rgba(30, 41, 59, 0.7);
+    /* Deep Slate Glass */
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-color: rgba(148, 163, 184, 0.1);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    --card-gradient: linear-gradient(145deg, #1e293b, #0f172a);
 }

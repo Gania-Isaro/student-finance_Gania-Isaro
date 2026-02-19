@@ -73,10 +73,13 @@
                         <h3>Total Records</h3>
                         <p class="amount">0</p>
                     </div>
-                    <div class="stat-card total-volume">
-                        <h3>Total Volume</h3>
+                    <div class="stat-card total-income">
+                        <h3>Total Income</h3>
                         <p class="amount">$0.00</p>
-                        <span class="meta">Sum of all transaction values</span>
+                    </div>
+                    <div class="stat-card total-expense">
+                        <h3>Total Expenses</h3>
+                        <p class="amount">$0.00</p>
                     </div>
                     <div class="stat-card top-category">
                         <h3>Top Category</h3>
@@ -243,29 +246,44 @@
                     <h2>Settings</h2>
                 </header>
                 <div class="settings-card">
-                    <h3>Currency</h3>
-                    <div class="form-group">
-                        <label for="currency-select">Base Currency</label>
-                        <select id="currency-select">
-                            <option value="RWF">RWF (Frw)</option>
-                            <option value="USD">USD ($)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="GBP">GBP (£)</option>
-                        </select>
-                    </div>
-                    <h3>Budget Limits</h3>
-                    <div class="form-group">
-                        <label for="budget-cap">Monthly Spending Cap</label>
-                        <input type="number" id="budget-cap" value="1000">
+                    <div class="setting-item">
+                        <h3>Appearance</h3>
+                        <div class="form-group flex-between">
+                            <label for="theme-toggle">Dark Mode</label>
+                            <button id="theme-toggle" class="btn btn-secondary">Switch Theme</button>
+                        </div>
                     </div>
 
-                    <h3>Data Management</h3>
-                    <div class="data-actions">
-                        <button class="btn btn-outline">Export JSON</button>
-                        <label class="btn btn-outline">
-                            Import JSON <input type="file" hidden>
-                        </label>
-                        <button class="btn btn-danger">Clear All Data</button>
+                    <div class="setting-item">
+                        <h3>Currency</h3>
+                        <div class="form-group">
+                            <label for="currency-select">Display Currency</label>
+                            <select id="currency-select">
+                                <option value="RWF">RWF (Frw)</option>
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                                <option value="GBP">GBP (£)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <h3>Budget Limits</h3>
+                        <div class="form-group">
+                            <label for="budget-cap">Monthly Spending Cap (Base RWF)</label>
+                            <input type="number" id="budget-cap" value="1000">
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <h3>Data Management</h3>
+                        <div class="data-actions">
+                            <button id="export-btn" class="btn btn-outline">Export JSON</button>
+                            <label class="btn btn-outline">
+                                Import JSON <input type="file" id="import-input" hidden accept=".json">
+                            </label>
+                            <button id="clear-btn" class="btn btn-danger">Clear All Data</button>
+                        </div>
                     </div>
                 </div>
             </section>
