@@ -11,8 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set the theme when the app starts
     const applyInitialTheme = (theme) => {
         if (theme === null) {
-            // If no theme is saved, use the computer's dark/light mode
-            UI.applyTheme(isDark ? 'dark' : 'light');
+            // Check if the system prefers dark mode
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            UI.applyTheme(prefersDark ? 'dark' : 'light');
         } else {
             UI.applyTheme(theme);
         }
