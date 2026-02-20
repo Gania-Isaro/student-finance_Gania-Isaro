@@ -1,4 +1,6 @@
 # Student Finance Tracker
+**[View Live Site](https://gania-isaro.github.io/student-finance_Gania-Isaro/)** | **[Watch Demo Video](https://youtu.be/YSLr-DJ2FuY)**
+
 This is a tool for students to track their money. It works on phones and laptops. It helps you see how much you earn and how much you spend.
 ## Features
 - See your income and expenses on one page.
@@ -43,6 +45,8 @@ For the full project design, sketches, and data model, please see [DESIGN.md](DE
 ### Testing the App
 Open the file named tests.html in your browser. It will automatically check if the app's logic is working correctly.
 ## Project Details
+- [Live Demo](https://gania-isaro.github.io/student-finance_Gania-Isaro/)
+- [Demo Video](https://youtu.be/YSLr-DJ2FuY)
 - Author: Gania Isaro
 - GitHub Link: [student-finance_Gania-Isaro](https://github.com/Gania-Isaro/student-finance_Gania-Isaro)
 - GitHub Profile: [Gania-Isaro](https://github.com/Gania-Isaro)
