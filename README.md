@@ -22,6 +22,8 @@ This is a tool for students to track their money. It works on phones and laptops
 2. Add your income or expenses using the form.
 3. Use the dashboard to see your savings and balance.
 ## Information for Developers
+For the full project design, sketches, and data model, please see [DESIGN.md](DESIGN.md).
+
 ### Validation Rules (Regex)
 - Description: No empty spaces at the beginning or end.
 - Amount: Must be a positive number with up to 2 decimal places.

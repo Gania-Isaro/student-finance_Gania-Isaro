@@ -119,6 +119,86 @@
             "type": "expense",
             "createdAt": "2026-02-20T12:30:00Z",
             "updatedAt": "2026-02-20T12:30:00Z"
+        },
+        {
+            "id": "rec_013",
+            "description": "Laundry Service",
+            "amount": 6000,
+            "category": "Other",
+            "date": "2026-02-21",
+            "type": "expense",
+            "createdAt": "2026-02-21T10:00:00Z",
+            "updatedAt": "2026-02-21T10:00:00Z"
+        },
+        {
+            "id": "rec_014",
+            "description": "Stationery (Pens)",
+            "amount": 2500,
+            "category": "Books",
+            "date": "2026-02-21",
+            "type": "expense",
+            "createdAt": "2026-02-21T14:00:00Z",
+            "updatedAt": "2026-02-21T14:00:00Z"
+        },
+        {
+            "id": "rec_015",
+            "description": "Phone Credit",
+            "amount": 10000,
+            "category": "Other",
+            "date": "2026-02-22",
+            "type": "expense",
+            "createdAt": "2026-02-22T09:00:00Z",
+            "updatedAt": "2026-02-22T09:00:00Z"
+        },
+        {
+            "id": "rec_016",
+            "description": "Weekend Brunch",
+            "amount": 20000,
+            "category": "Food",
+            "date": "2026-02-22",
+            "type": "expense",
+            "createdAt": "2026-02-22T12:00:00Z",
+            "updatedAt": "2026-02-22T12:00:00Z"
+        },
+        {
+            "id": "rec_017",
+            "description": "Gift for family",
+            "amount": 35000,
+            "category": "Other",
+            "date": "2026-02-23",
+            "type": "expense",
+            "createdAt": "2026-02-23T11:00:00Z",
+            "updatedAt": "2026-02-23T11:00:00Z"
+        },
+        {
+            "id": "rec_018",
+            "description": "Part-time Job",
+            "amount": 150000,
+            "category": "Income",
+            "date": "2026-02-23",
+            "type": "income",
+            "createdAt": "2026-02-23T16:00:00Z",
+            "updatedAt": "2026-02-23T16:00:00Z"
+        },
+        {
+            "id": "rec_019",
+            "description": "Electricity Bill",
+            "amount": 15000,
+            "category": "Other",
+            "date": "2026-02-24",
+            "type": "expense",
+            "createdAt": "2026-02-24T10:00:00Z",
+            "updatedAt": "2026-02-24T10:00:00Z"
+        },
+        {
+            "id": "rec_020",
+            "description": "Netflix Subscription",
+            "amount": 12500,
+            "category": "Entertainment",
+            "date": "2026-02-24",
+            "type": "expense",
+            "createdAt": "2026-02-24T14:00:00Z",
+            "updatedAt": "2026-02-24T14:00:00Z"
         }
     ],
     "settings": {
