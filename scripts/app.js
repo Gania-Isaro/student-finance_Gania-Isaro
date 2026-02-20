@@ -1,12 +1,31 @@
 const State = window.App.State;
 const UI = window.App.UI;
+const Utils = window.App.Utils;
 const Validator = window.App.Validators;
 const Search = window.App.Search;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initialize State and UI
+    // 1. Get the data and settings from storage
     const { records, settings } = State.init();
-    UI.applyTheme(settings.theme);
+
+    // Set the theme when the app starts
+    const applyInitialTheme = (theme) => {
+        if (theme === null) {
+            // If no theme is saved, use the computer's dark/light mode
+            UI.applyTheme(isDark ? 'dark' : 'light');
+        } else {
+            UI.applyTheme(theme);
+        }
+    };
+    applyInitialTheme(settings.theme);
+
+    // Change theme automatically if the computer's theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        // Only do this if the user hasn't picked a theme yet
+        if (State.getSettings().theme === null) {
+            UI.applyTheme(e.matches ? 'dark' : 'light');
+        }
+    });
 
     // Sync settings UI
     const currencySelect = document.getElementById('currency-select');
@@ -18,25 +37,61 @@ document.addEventListener('DOMContentLoaded', () => {
     const savingsTargetInput = document.getElementById('savings-target');
     if (savingsTargetInput) savingsTargetInput.value = settings.savingsTarget;
 
+    const actualSavingsInput = document.getElementById('actual-savings');
+    if (actualSavingsInput) actualSavingsInput.value = settings.actualSavedAmount;
+
+    /**
+     * This function updates the labels and input values to match the current currency
+     */
+    const syncLabels = (forceUpdateValues = false) => {
+        const currentSettings = State.getSettings();
+        const currentCurrency = currentSettings.currency;
+
+        const capLabel = document.querySelector('.cap-label');
+        const targetLabel = document.querySelector('.target-label');
+        const actualLabel = document.querySelector('.actual-label');
+
+        if (capLabel) capLabel.textContent = `Monthly Spending Cap (${currentCurrency})`;
+        if (targetLabel) targetLabel.textContent = `Monthly Savings Target (${currentCurrency})`;
+        if (actualLabel) actualLabel.textContent = `Actual Savings (${currentCurrency})`;
+
+        if (forceUpdateValues) {
+            if (budgetCapInput) budgetCapInput.value = Utils.convertFromBase(currentSettings.budgetCap, currentCurrency).toFixed(0);
+            if (savingsTargetInput) savingsTargetInput.value = Utils.convertFromBase(currentSettings.savingsTarget, currentCurrency).toFixed(0);
+            if (actualSavingsInput) actualSavingsInput.value = Utils.convertFromBase(currentSettings.actualSavedAmount, currentCurrency).toFixed(0);
+        }
+    };
+
     let currentQuery = '';
     let currentSort = 'date-desc';
 
-    // Helper to Filter -> Sort -> Render
+    // This function filters and sorts the data, then updates the page
     const render = () => {
         const allRecords = State.getRecords();
         const filtered = Search.filterRecords(allRecords, currentQuery);
         const sorted = Search.sortRecords(filtered, currentSort);
 
-        UI.renderTable(sorted);
-        UI.updateDashboard(sorted);
+        // This helps highlight words you are searching for
+        const regex = currentQuery ? Search.compileRegex(currentQuery) : null;
+        UI.renderTable(sorted, regex);
+        UI.updateDashboard(allRecords);
+        syncLabels(false);
     };
 
     // 2. Initial Render
+    syncLabels(true); // Put the saved values into the settings boxes
     render();
 
     // 3. Main Event Listeners
     const form = document.querySelector('.entry-form');
     if (form) form.addEventListener('submit', handleAddRecord);
+
+    const cancelBtn = document.getElementById('cancel-transaction');
+    if (cancelBtn) {
+        cancelBtn.onclick = () => {
+            UI.clearForm();
+        };
+    }
 
     const tableBody = document.querySelector('.data-table tbody');
     if (tableBody) tableBody.addEventListener('click', handleTableActions);
@@ -62,7 +117,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (themeToggle) {
         themeToggle.onclick = () => {
             const currentTheme = State.getSettings().theme;
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            let effectiveTheme = currentTheme;
+
+            // If currently in 'auto' mode, detect what's applied to toggle it
+            if (effectiveTheme === null) {
+                effectiveTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+
+            const newTheme = effectiveTheme === 'light' ? 'dark' : 'light';
             State.updateSettings({ theme: newTheme });
             UI.applyTheme(newTheme);
         };
@@ -71,23 +133,35 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currencySelect) {
         currencySelect.onchange = (e) => {
             State.updateSettings({ currency: e.target.value });
+            syncLabels(true);
             render();
         };
     }
 
+    // Save these numbers when the user types in the settings boxes
     if (budgetCapInput) {
         budgetCapInput.oninput = (e) => {
-            const val = parseFloat(e.target.value) || 0;
-            State.updateSettings({ budgetCap: val });
+            const displayVal = parseFloat(e.target.value) || 0;
+            const baseVal = Utils.convertToBase(displayVal, State.getSettings().currency);
+            State.updateSettings({ budgetCap: baseVal });
             render();
         };
     }
 
-    // New: Savings target event listener
     if (savingsTargetInput) {
         savingsTargetInput.oninput = (e) => {
-            const val = parseFloat(e.target.value) || 0;
-            State.updateSettings({ savingsTarget: val });
+            const displayVal = parseFloat(e.target.value) || 0;
+            const baseVal = Utils.convertToBase(displayVal, State.getSettings().currency);
+            State.updateSettings({ savingsTarget: baseVal });
+            render();
+        };
+    }
+
+    if (actualSavingsInput) {
+        actualSavingsInput.oninput = (e) => {
+            const displayVal = parseFloat(e.target.value) || 0;
+            const baseVal = Utils.convertToBase(displayVal, State.getSettings().currency);
+            State.updateSettings({ actualSavedAmount: baseVal });
             render();
         };
     }
@@ -142,6 +216,11 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Invalid Amount: Must be a positive number (max 2 decimals).');
             return;
         }
+        // Advanced Regex: Back-reference check for duplicate words (Requirement C)
+        if (Validator.Patterns.duplicateWords.test(desc)) {
+            alert('Validation Error: Please avoid repeating the same word twice in the description.');
+            return;
+        }
         if (!typeInput.value) {
             alert('Please select a Transaction Type (Income or Expense).');
             return;
@@ -169,9 +248,10 @@ document.addEventListener('DOMContentLoaded', () => {
         State.addRecord(newRecord);
         render();
         UI.clearForm();
-        if (typeof UI.showStatus === 'function') UI.showStatus('Record added successfully!', 'success');
+        if (typeof UI.showStatus === 'function') UI.showStatus('Transaction added!', 'success');
     }
 
+    // This handles clicks in the table like Delete and Edit
     function handleTableActions(e) {
         const btn = e.target.closest('button');
         if (!btn) return;
@@ -179,12 +259,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = btn.dataset.id;
 
         if (btn.classList.contains('delete')) {
-            if (confirm('Are you sure you want to delete this record?')) {
+            if (confirm('Are you sure you want to delete this?')) {
                 State.deleteRecord(id);
                 render();
-                if (typeof UI.showStatus === 'function') UI.showStatus('Record deleted.', 'success');
+                if (typeof UI.showStatus === 'function') UI.showStatus('Deleted.', 'success');
             }
-        } else if (btn.classList.contains('edit')) {
+        }
+        // If the user clicks the Edit button
+        else if (btn.classList.contains('edit')) {
             const tr = btn.closest('tr');
             const record = State.getRecords().find(r => r.id === btn.dataset.id);
             if (!record) return;
@@ -205,8 +287,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </td>
                 <td><input type="number" step="0.01" value="${record.amount}" class="edit-amount"></td>
                 <td class="text-center">
-                    <button class="btn-icon save-edit" data-id="${record.id}">💾</button>
-                    <button class="btn-icon cancel-edit" data-id="${record.id}">❌</button>
+                    <button class="btn-icon save-edit" data-id="${record.id}">Save</button>
+                    <button class="btn-icon cancel-edit" data-id="${record.id}">Cancel</button>
                 </td>
             `;
         } else if (btn.classList.contains('save-edit')) {
@@ -223,12 +305,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!Validator.validate('category', updatedData.category)) { alert('Invalid Category'); return; }
             if (!Validator.validate('amount', updatedData.amount)) { alert('Invalid Amount'); return; }
 
+            // Advanced Regex check for internal edits
+            if (Validator.Patterns.duplicateWords.test(updatedData.description)) {
+                alert('Validation Error: Repeated words detected.');
+                return;
+            }
+
             updatedData.amount = parseFloat(updatedData.amount);
 
             State.updateRecord(btn.dataset.id, updatedData);
             render();
-            if (typeof UI.showStatus === 'function') UI.showStatus('Record updated.', 'success');
-        } else if (btn.classList.contains('cancel-edit')) {
+            if (typeof UI.showStatus === 'function') UI.showStatus('Updated!', 'success');
+        }
+        // If the user clicks Cancel while editing
+        else if (btn.classList.contains('cancel-edit')) {
             render();
         }
     }

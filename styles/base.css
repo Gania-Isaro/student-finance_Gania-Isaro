@@ -85,15 +85,25 @@ button {
 }
 
 .skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--primary-color);
-    color: white;
-    padding: 8px;
-    z-index: 100;
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-dark);
+    color: #ffffff;
+    padding: 1rem 2rem;
+    z-index: 9999;
+    font-weight: 800;
+    text-decoration: none;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--primary-color);
+    border-top: none;
+    transition: top 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
 .skip-link:focus {
     top: 0;
+    outline: 3px solid var(--accent-color);
+    outline-offset: 4px;
 }

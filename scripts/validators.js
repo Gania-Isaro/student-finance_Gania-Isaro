@@ -2,19 +2,19 @@ window.App = window.App || {};
 
 window.App.Validators = (function () {
     const Patterns = {
-        // Description: Forbid leading/trailing spaces and collapse doubles
+        // No extra spaces at the start or end
         description: /^\S(?:.*\S)?$/,
 
-        // Amount: Positive integer or 2 decimal places (e.g., 10, 10.5, 10.50)
+        // Must be a positive number
         amount: /^(0|[1-9]\d*)(\.\d{1,2})?$/,
 
-        // Category: Letters, spaces, hyphens
+        // Only letters are allowed for categories
         category: /^[A-Za-z]+(?:[ -][A-Za-z]+)*$/,
 
-        // Date: YYYY-MM-DD
+        // The date must be Year-Month-Day
         date: /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
 
-        // Advanced: Catch duplicate words (e.g., "coffee coffee")
+        // Check if the same word is typed twice
         duplicateWords: /\b(\w+)\s+\1\b/i
     };
 

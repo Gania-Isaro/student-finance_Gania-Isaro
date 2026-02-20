@@ -5,6 +5,7 @@ window.App.Storage = (function () {
 
     const SETTINGS_KEY = 'app:settings';
 
+    // Load all transactions from the computer's storage
     const load = () => {
         try {
             const data = localStorage.getItem(KEY);
@@ -17,6 +18,7 @@ window.App.Storage = (function () {
         }
     };
 
+    // Save all transactions to the computer's storage
     const save = (data) => {
         try {
             localStorage.setItem(KEY, JSON.stringify(data));
@@ -25,19 +27,22 @@ window.App.Storage = (function () {
         }
     };
 
+    // Load the app settings (like theme and currency)
     const loadSettings = () => {
         try {
             const data = localStorage.getItem(SETTINGS_KEY);
-            if (!data) return { theme: 'light', currency: 'RWF', budgetCap: 1000, savingsTarget: 0 };
+            if (!data) return { theme: null, currency: 'RWF', budgetCap: 1000, savingsTarget: 0, actualSavedAmount: 0 };
             const settings = JSON.parse(data);
             if (settings.savingsTarget === undefined) settings.savingsTarget = 0;
+            if (settings.actualSavedAmount === undefined) settings.actualSavedAmount = 0;
             return settings;
         } catch (error) {
             console.error('Error loading settings:', error);
-            return { theme: 'light', currency: 'RWF', budgetCap: 1000, savingsTarget: 0 };
+            return { theme: null, currency: 'RWF', budgetCap: 1000, savingsTarget: 0, actualSavedAmount: 0 };
         }
     };
 
+    // Save the app settings to the computer's storage
     const saveSettings = (settings) => {
         try {
             localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));

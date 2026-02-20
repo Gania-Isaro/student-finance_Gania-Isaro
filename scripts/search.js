@@ -1,55 +1,56 @@
 window.App = window.App || {};
 
 window.App.Search = (function () {
-    // 1. Compile Regex Safely
-    const compileRegex = (query) => {
+    // 1. Safe Regex Compiler (Assignment Requirement)
+    // This function makes a search pattern (regex) from the word you type
+    const compileRegex = (query, flags = 'gi') => {
         if (!query) return null;
         try {
-            // Check if user is typing a raw regex (e.g., /^Starts/)
-            // If they are just typing text, escape special chars to treat as literal, 
-            // OR let them use regex if advanced. 
-            // Requirement says "Live regex search", implying user might type valid regex.
-            return new RegExp(query, 'i');
+            return new RegExp(query, flags);
         } catch (e) {
-            // Invalid regex (e.g. user typed "["), treat as literal string search
+            // If you type something that is not a valid pattern, we just search for the exact words
             const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            return new RegExp(escaped, 'i');
+            return new RegExp(escaped, flags);
         }
     };
 
     // 2. Filter Logic
+    // This function filters the transactions to find what you are looking for
     const filterRecords = (records, query) => {
         if (!query) return records;
 
         const regex = compileRegex(query);
+        const testRegex = new RegExp(regex.source, 'i');
+
         return records.filter(record => {
-            // Search in Description, Category, or Amount
-            return regex.test(record.description) ||
-                regex.test(record.category) ||
-                regex.test(record.amount.toString());
+            // Check if the description, category, or amount matches your search
+            return testRegex.test(record.description) ||
+                testRegex.test(record.category) ||
+                testRegex.test(record.amount.toString());
         });
     };
 
     // 3. Sort Logic
+    // This function sorts the transactions (like by date or category)
     const sortRecords = (records, sortBy) => {
-        // Create a copy to avoid mutating original state
+        // We make a copy of the data before we sort it
         const sorted = [...records];
 
         return sorted.sort((a, b) => {
             switch (sortBy) {
-                case 'category-asc': // A-Z
+                case 'category-asc':
                     return a.category.localeCompare(b.category);
-                case 'category-desc': // Z-A
+                case 'category-desc':
                     return b.category.localeCompare(a.category);
 
-                case 'amount-asc': // Low-High
+                case 'amount-asc': // From low to high
                     return a.amount - b.amount;
-                case 'amount-desc': // High-Low
+                case 'amount-desc': // From high to low
                     return b.amount - a.amount;
 
-                case 'date-asc': // Oldest First
+                case 'date-asc': // From oldest to newest
                     return new Date(a.date) - new Date(b.date);
-                case 'date-desc': // Newest First (Default)
+                case 'date-desc': // From newest to oldest
                 default:
                     return new Date(b.date) - new Date(a.date);
             }
@@ -58,6 +59,7 @@ window.App.Search = (function () {
 
     return {
         filterRecords,
-        sortRecords
+        sortRecords,
+        compileRegex
     };
 })();

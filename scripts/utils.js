@@ -8,6 +8,7 @@ window.App.Utils = (function () {
         'GBP': 0.00057
     };
 
+    // This function shows the money in a nice way (like $10.00 or 1,000 RWF)
     const formatCurrency = (amount, currency = 'USD') => {
         try {
             return new Intl.NumberFormat('en-US', {
@@ -15,7 +16,7 @@ window.App.Utils = (function () {
                 currency: currency
             }).format(amount);
         } catch (e) {
-            // Fallback for custom or unsupported currencies
+            // If the currency name is not recognized, show it like this:
             return `${currency} ${amount.toFixed(2)}`;
         }
     };
@@ -25,6 +26,12 @@ window.App.Utils = (function () {
         return amount * rate;
     };
 
+    const convertToBase = (amount, sourceCurrency) => {
+        const rate = RATES[sourceCurrency] || 1;
+        return amount / rate;
+    };
+
+    // This function shows a date in a simple way (like Jan 1, 2024)
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
@@ -33,6 +40,7 @@ window.App.Utils = (function () {
     return {
         formatCurrency,
         convertFromBase,
+        convertToBase,
         formatDate
     };
 })();
